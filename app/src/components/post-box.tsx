@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Heading, Text } from '@chakra-ui/react'
 
-interface PostBoxProps {
+type PostBoxProps = {
   post: any
 }
 

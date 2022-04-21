@@ -1,17 +1,17 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import jwt from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import { Box, Button, Flex, useToast } from '@chakra-ui/react'
 import { Formik, Form } from 'formik'
 
 import { InputField } from '../components/input-field'
-import { UserContext } from '../context/user-context'
 import { api } from '../data/api'
 
-interface LoginPageProps {}
+type LoginPageProps = {
+  setUser: (user?: any) => void
+}
 
-export const LoginPage: React.FC<LoginPageProps> = () => {
-  const { setUserData } = useContext(UserContext)
+export const LoginPage: Component<LoginPageProps> = ({ setUser }) => {
   const toast = useToast()
   const navigate = useNavigate()
 
@@ -19,7 +19,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
     try {
       const { data } = await api.post('/login', values)
       const tokenData = jwt(data.accessToken)
-      setUserData({
+      setUser({
         name: (tokenData as any).username,
         accessToken: data.accessToken,
       })

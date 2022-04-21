@@ -8,7 +8,7 @@ const Content: Component = ({ children }) => (
   </Box>
 )
 
-const Footer: React.FC = () => (
+const Footer: Component = () => (
   <Flex bg='gray.600' mt='auto' h={8} justify='center'>
     <Center>
       <Text fontSize='sm' color='gray.100'>
@@ -18,10 +18,15 @@ const Footer: React.FC = () => (
   </Flex>
 )
 
-export const Layout: Component = ({ children }) => {
+type LayoutProps = {
+  user?: any
+  setUser: (user?: any) => void
+}
+
+export const Layout: Component<LayoutProps> = ({ children, user, setUser }) => {
   return (
     <Flex flexDir='column' w='100vw' maxW='100%' minH='100vh'>
-      <Header />
+      <Header user={user} setUser={setUser} />
       <Content children={children} />
       <Footer />
     </Flex>

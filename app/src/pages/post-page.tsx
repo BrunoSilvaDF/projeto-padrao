@@ -1,17 +1,17 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { Box, Button, Heading, useToast } from '@chakra-ui/react'
 
 import { InputField } from '../components/input-field'
-import { UserContext } from '../context/user-context'
 import { Wrapper } from '../components/wrapper'
 import { api } from '../data/api'
 
-interface PostPageProps {}
+type PostPageProps = {
+  user?: any
+}
 
-export const PostPage: React.FC<PostPageProps> = () => {
-  const { userData } = useContext(UserContext)
+export const PostPage: Component<PostPageProps> = ({ user }) => {
   const toast = useToast()
 
   const navigate = useNavigate()
@@ -20,7 +20,7 @@ export const PostPage: React.FC<PostPageProps> = () => {
     try {
       await api.post('/posts', values, {
         headers: {
-          'x-access-token': userData!.accessToken,
+          'x-access-token': user.accessToken,
         },
       })
       toast({
