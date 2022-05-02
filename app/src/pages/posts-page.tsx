@@ -5,12 +5,12 @@ import { Box, Button, Flex, Heading } from '@chakra-ui/react'
 import { api } from '../data/api'
 import { PostBox } from '../components/post-box'
 import { Wrapper } from '../components/wrapper'
+import { useAuth } from '../context/auth-context'
 
-type PostsPageProps = {
-  user?: any
-}
+type PostsPageProps = {}
 
-export const PostsPage: React.FC<PostsPageProps> = ({ user }) => {
+export const PostsPage: React.FC<PostsPageProps> = () => {
+  const { user } = useAuth()
   const [posts, setPosts] = useState<any[]>([])
 
   const fetchPosts = async () => {

@@ -6,12 +6,12 @@ import { Formik, Form } from 'formik'
 
 import { InputField } from '../components/input-field'
 import { api } from '../data/api'
+import { useAuth } from '../context/auth-context'
 
-type LoginPageProps = {
-  setUser: (user?: any) => void
-}
+type LoginPageProps = {}
 
-export const LoginPage: Component<LoginPageProps> = ({ setUser }) => {
+export const LoginPage: Component<LoginPageProps> = () => {
+  const { setUser } = useAuth()
   const toast = useToast()
   const navigate = useNavigate()
 

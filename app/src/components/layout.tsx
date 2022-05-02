@@ -18,15 +18,12 @@ const Footer: Component = () => (
   </Flex>
 )
 
-type LayoutProps = {
-  user?: any
-  setUser: (user?: any) => void
-}
+type LayoutProps = {}
 
-export const Layout: Component<LayoutProps> = ({ children, user, setUser }) => {
+export const Layout: Component<LayoutProps> = ({ children }) => {
   return (
     <Flex flexDir='column' w='100vw' maxW='100%' minH='100vh'>
-      <Header user={user} setUser={setUser} />
+      <Header />
       <Content children={children} />
       <Footer />
     </Flex>

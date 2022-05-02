@@ -6,12 +6,12 @@ import { Box, Button, Heading, useToast } from '@chakra-ui/react'
 import { InputField } from '../components/input-field'
 import { Wrapper } from '../components/wrapper'
 import { api } from '../data/api'
+import { useAuth } from '../context/auth-context'
 
-type PostPageProps = {
-  user?: any
-}
+type PostPageProps = {}
 
-export const PostPage: Component<PostPageProps> = ({ user }) => {
+export const PostPage: Component<PostPageProps> = () => {
+  const { user } = useAuth()
   const toast = useToast()
 
   const navigate = useNavigate()
@@ -20,7 +20,7 @@ export const PostPage: Component<PostPageProps> = ({ user }) => {
     try {
       await api.post('/posts', values, {
         headers: {
-          'x-access-token': user.accessToken,
+          'x-access-token': user!.accessToken,
         },
       })
       toast({

@@ -5,20 +5,19 @@ import { FaUserCircle } from 'react-icons/fa'
 
 import { api } from '../data/api'
 import { HeaderBar } from './header-bar'
+import { useAuth } from '../context/auth-context'
 
-type HeaderProps = {
-  user: any
-  setUser: (user?: any) => void
-}
+type HeaderProps = {}
 
-export const Header: Component<HeaderProps> = ({ user, setUser }) => {
+export const Header: Component<HeaderProps> = () => {
+  const { user, setUser } = useAuth()
   const navigate = useNavigate()
   const toast = useToast()
 
   const logout = async () => {
     await api.get('/logout', {
       headers: {
-        'x-access-token': user.accessToken,
+        'x-access-token': user!.accessToken,
       },
     })
     setUser(undefined)
