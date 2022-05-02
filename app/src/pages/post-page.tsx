@@ -5,23 +5,15 @@ import { Box, Button, Heading, useToast } from '@chakra-ui/react'
 
 import { InputField } from '../components/input-field'
 import { Wrapper } from '../components/wrapper'
-import { api } from '../data/api'
 import { useAuth } from '../context/auth-context'
 import { CreatePostDto } from '../types/post'
-import { User } from '../types/user'
+import { usePosts } from '../context/posts-context'
 
 type PostPageProps = {}
 
-const createPost = async (values: CreatePostDto, user: User): Promise<void> => {
-  await api.post('/posts', values, {
-    headers: {
-      'x-access-token': user!.accessToken,
-    },
-  })
-}
-
 export const PostPage: Component<PostPageProps> = () => {
   const { user } = useAuth()
+  const { createPost } = usePosts()
   const toast = useToast({ position: 'top', isClosable: true })
 
   const navigate = useNavigate()

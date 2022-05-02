@@ -6,16 +6,19 @@ import { Router } from './router'
 import theme from './components/theme'
 import { Layout } from './components/layout'
 import { AuthContextProvider } from './context/auth-context'
+import { PostsContextProvider } from './context/posts-context'
 
 export const App = () => {
   return (
     <ChakraProvider theme={theme} resetCSS>
       <AuthContextProvider>
-        <BrowserRouter>
-          <Layout>
-            <Router />
-          </Layout>
-        </BrowserRouter>
+        <PostsContextProvider>
+          <BrowserRouter>
+            <Layout>
+              <Router />
+            </Layout>
+          </BrowserRouter>
+        </PostsContextProvider>
       </AuthContextProvider>
     </ChakraProvider>
   )

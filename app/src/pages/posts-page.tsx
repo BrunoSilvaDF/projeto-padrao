@@ -2,26 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Box, Button, Flex, Heading } from '@chakra-ui/react'
 
-import { api } from '../data/api'
 import { PostBox } from '../components/post-box'
 import { Wrapper } from '../components/wrapper'
 import { useAuth } from '../context/auth-context'
-import { Post } from '../types/post'
+import { usePosts } from '../context/posts-context'
 
 type PostsPageProps = {}
 
-const fetchPosts = async (): Promise<Post[]> => {
-  const { data } = await api.get<Post[]>('/posts')
-  return data
-}
-
 export const PostsPage: React.FC<PostsPageProps> = () => {
   const { user } = useAuth()
+  const { fetchPosts } = usePosts()
   const [posts, setPosts] = useState<any[]>([])
 
   useEffect(() => {
     fetchPosts().then(setPosts)
-  }, [])
+  }, [fetchPosts])
 
   return (
     <Wrapper>
