@@ -3,29 +3,18 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { Box, Flex, Link, Icon, useToast } from '@chakra-ui/react'
 import { FaUserCircle } from 'react-icons/fa'
 
-import { api } from '../data/api'
 import { HeaderBar } from './header-bar'
 import { useAuth } from '../context/auth-context'
-import { User } from '../types/user'
 
 type HeaderProps = {}
 
-const logout = async (user: User): Promise<void> => {
-  await api.get('/logout', {
-    headers: {
-      'x-access-token': user!.accessToken,
-    },
-  })
-}
-
 export const Header: Component<HeaderProps> = () => {
-  const { user, setUser } = useAuth()
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
   const toast = useToast({ position: 'top', isClosable: true })
 
   const onLogout = async () => {
-    logout(user!)
-    setUser(undefined)
+    await logout()
     toast({
       description: 'You logged out',
       status: 'info',
