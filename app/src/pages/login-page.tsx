@@ -7,30 +7,39 @@ import { Formik, Form } from 'formik'
 import { InputField } from '../components/input-field'
 import { api } from '../data/api'
 import { useAuth } from '../context/auth-context'
+import { LoginUserDto, User } from '../types/user'
 
 type LoginPageProps = {}
 
+const login = async (values: LoginUserDto): Promise<User> => {
+  const { data } = await api.post<User>('/login', values)
+  return data
+}
+
 export const LoginPage: Component<LoginPageProps> = () => {
   const { setUser } = useAuth()
-  const toast = useToast()
+  const toast = useToast({ position: 'top', isClosable: true })
   const navigate = useNavigate()
 
-  const login = async (values: any) => {
+  const initialValues: LoginUserDto = {
+    username: '',
+    password: '',
+  }
+
+  const onSubmit = async (values: LoginUserDto) => {
     try {
-      const { data } = await api.post('/login', values)
-      const tokenData = jwt(data.accessToken)
+      const { accessToken } = await login(values)
+      const tokenData = jwt(accessToken)
       setUser({
         name: (tokenData as any).username,
-        accessToken: data.accessToken,
+        accessToken: accessToken,
       })
       navigate('/')
     } catch (error) {
       toast({
-        position: 'top',
         title: 'Error',
         description: 'Something went wrong on login',
         status: 'error',
-        isClosable: true,
       })
     }
   }
@@ -39,13 +48,7 @@ export const LoginPage: Component<LoginPageProps> = () => {
     <Flex h='100%' minH='80vh' alignContent='center' alignItems='center'>
       <Box mx='auto' w='100%' maxW='20rem'>
         <Box p='10' borderRadius='lg' bg='gray.500'>
-          <Formik
-            initialValues={{
-              username: '',
-              password: '',
-            }}
-            onSubmit={login}
-          >
+          <Formik initialValues={initialValues} onSubmit={onSubmit}>
             {({ isSubmitting }) => (
               <Form>
                 <InputField name='username' label='Login' />

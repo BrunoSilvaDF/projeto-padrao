@@ -7,36 +7,43 @@ import { InputField } from '../components/input-field'
 import { Wrapper } from '../components/wrapper'
 import { api } from '../data/api'
 import { useAuth } from '../context/auth-context'
+import { CreatePostDto } from '../types/post'
+import { User } from '../types/user'
 
 type PostPageProps = {}
 
+const createPost = async (values: CreatePostDto, user: User): Promise<void> => {
+  await api.post('/posts', values, {
+    headers: {
+      'x-access-token': user!.accessToken,
+    },
+  })
+}
+
 export const PostPage: Component<PostPageProps> = () => {
   const { user } = useAuth()
-  const toast = useToast()
+  const toast = useToast({ position: 'top', isClosable: true })
 
   const navigate = useNavigate()
 
-  const createPost = async (values: any) => {
+  const initialValues: CreatePostDto = {
+    title: '',
+    content: '',
+  }
+
+  const onSubmit = async (values: CreatePostDto) => {
     try {
-      await api.post('/posts', values, {
-        headers: {
-          'x-access-token': user!.accessToken,
-        },
-      })
+      await createPost(values, user!)
       toast({
-        position: 'top',
         description: 'Post created!!',
         status: 'success',
-        isClosable: true,
       })
       navigate('/')
     } catch (error) {
       toast({
-        position: 'top',
         title: 'Error',
         description: 'Something went wrong',
         status: 'error',
-        isClosable: true,
       })
     }
   }
@@ -47,13 +54,7 @@ export const PostPage: Component<PostPageProps> = () => {
         Create a new Post
       </Heading>
       <Box p='10' borderRadius='lg' bg='gray.100'>
-        <Formik
-          initialValues={{
-            title: '',
-            content: '',
-          }}
-          onSubmit={createPost}
-        >
+        <Formik initialValues={initialValues} onSubmit={onSubmit}>
           {({ isSubmitting }) => (
             <Form>
               <InputField name='title' label='Title' />

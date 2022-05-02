@@ -6,26 +6,29 @@ import { FaUserCircle } from 'react-icons/fa'
 import { api } from '../data/api'
 import { HeaderBar } from './header-bar'
 import { useAuth } from '../context/auth-context'
+import { User } from '../types/user'
 
 type HeaderProps = {}
+
+const logout = async (user: User): Promise<void> => {
+  await api.get('/logout', {
+    headers: {
+      'x-access-token': user!.accessToken,
+    },
+  })
+}
 
 export const Header: Component<HeaderProps> = () => {
   const { user, setUser } = useAuth()
   const navigate = useNavigate()
-  const toast = useToast()
+  const toast = useToast({ position: 'top', isClosable: true })
 
-  const logout = async () => {
-    await api.get('/logout', {
-      headers: {
-        'x-access-token': user!.accessToken,
-      },
-    })
+  const onLogout = async () => {
+    logout(user!)
     setUser(undefined)
     toast({
-      position: 'top',
       description: 'You logged out',
       status: 'info',
-      isClosable: true,
     })
     navigate('/')
   }
@@ -38,7 +41,7 @@ export const Header: Component<HeaderProps> = () => {
             <Box>Hi {user.name}!</Box>
             <Icon as={FaUserCircle} />
             <Box>
-              <Link onClick={logout}>logout</Link>
+              <Link onClick={onLogout}>logout</Link>
             </Box>
           </>
         ) : (

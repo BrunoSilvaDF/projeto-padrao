@@ -6,20 +6,21 @@ import { api } from '../data/api'
 import { PostBox } from '../components/post-box'
 import { Wrapper } from '../components/wrapper'
 import { useAuth } from '../context/auth-context'
+import { Post } from '../types/post'
 
 type PostsPageProps = {}
+
+const fetchPosts = async (): Promise<Post[]> => {
+  const { data } = await api.get<Post[]>('/posts')
+  return data
+}
 
 export const PostsPage: React.FC<PostsPageProps> = () => {
   const { user } = useAuth()
   const [posts, setPosts] = useState<any[]>([])
 
-  const fetchPosts = async () => {
-    const { data } = await api.get('/posts')
-    setPosts(data)
-  }
-
   useEffect(() => {
-    fetchPosts().then()
+    fetchPosts().then(setPosts)
   }, [])
 
   return (
