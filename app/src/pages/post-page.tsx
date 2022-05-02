@@ -5,14 +5,12 @@ import { Box, Button, Heading, useToast } from '@chakra-ui/react'
 
 import { InputField } from '../components/input-field'
 import { Wrapper } from '../components/wrapper'
-import { useAuth } from '../context/auth-context'
 import { CreatePostDto } from '../types/post'
 import { usePosts } from '../context/posts-context'
 
 type PostPageProps = {}
 
 export const PostPage: Component<PostPageProps> = () => {
-  const { user } = useAuth()
   const { createPost } = usePosts()
   const toast = useToast({ position: 'top', isClosable: true })
 
@@ -25,7 +23,7 @@ export const PostPage: Component<PostPageProps> = () => {
 
   const onSubmit = async (values: CreatePostDto) => {
     try {
-      await createPost(values, user!)
+      await createPost(values)
       toast({
         description: 'Post created!!',
         status: 'success',

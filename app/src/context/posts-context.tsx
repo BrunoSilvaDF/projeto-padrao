@@ -1,24 +1,11 @@
-import { createContext, useContext } from 'react'
+import { createContext, useCallback, useContext } from 'react'
 import { api } from '../data/api'
 import { CreatePostDto, Post } from '../types/post'
-import { User } from '../types/user'
-
-const fetchPosts = async (): Promise<Post[]> => {
-  const { data } = await api.get<Post[]>('/posts')
-  return data
-}
-
-const createPost = async (values: CreatePostDto, user: User): Promise<void> => {
-  await api.post('/posts', values, {
-    headers: {
-      'x-access-token': user!.accessToken,
-    },
-  })
-}
+import { useAuth } from './auth-context'
 
 interface IPostsContext {
   fetchPosts: () => Promise<Post[]>
-  createPost: (values: CreatePostDto, user: User) => Promise<void>
+  createPost: (values: CreatePostDto) => Promise<void>
 }
 
 const PostsContext = createContext<IPostsContext>({
@@ -27,6 +14,24 @@ const PostsContext = createContext<IPostsContext>({
 })
 
 export const PostsContextProvider: Component = ({ children }) => {
+  const { user } = useAuth()
+
+  const createPost = useCallback(
+    async (values: CreatePostDto): Promise<void> => {
+      await api.post('/posts', values, {
+        headers: {
+          'x-access-token': user!.accessToken,
+        },
+      })
+    },
+    [user]
+  )
+
+  const fetchPosts = async (): Promise<Post[]> => {
+    const { data } = await api.get<Post[]>('/posts')
+    return data
+  }
+
   return (
     <PostsContext.Provider
       value={{
