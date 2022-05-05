@@ -5,18 +5,21 @@ import { BrowserRouter } from 'react-router-dom'
 import { Router } from './router'
 import theme from './components/theme'
 import { Layout } from './components/layout'
-import { Providers } from './context/providers'
+import { AuthContextProvider } from './context/auth-context'
+import { ApiProvider } from './context/api-context'
 
 export const App = () => {
   return (
     <ChakraProvider theme={theme} resetCSS>
-      <Providers>
-        <BrowserRouter>
-          <Layout>
-            <Router />
-          </Layout>
-        </BrowserRouter>
-      </Providers>
+      <AuthContextProvider>
+        <ApiProvider>
+          <BrowserRouter>
+            <Layout>
+              <Router />
+            </Layout>
+          </BrowserRouter>
+        </ApiProvider>
+      </AuthContextProvider>
     </ChakraProvider>
   )
 }

@@ -9,7 +9,7 @@ interface IAuthContext {
   logout: () => Promise<void>
 }
 
-const AuthContext = createContext<IAuthContext>({
+export const AuthContext = createContext<IAuthContext>({
   login: () => Promise.reject(),
   logout: () => Promise.reject(),
 })
@@ -24,6 +24,10 @@ export const AuthContextProvider: Component = ({ children }) => {
       name: (tokenData as any).username,
       accessToken: data.accessToken,
     })
+    api.interceptors.request.use(req => {
+      req.headers!['x-access-token'] = data.accessToken
+      return req
+    })
   }
 
   const logout = async () => {
@@ -33,6 +37,7 @@ export const AuthContextProvider: Component = ({ children }) => {
       },
     })
     setUser(undefined)
+    api.interceptors.request.eject(0)
   }
 
   return (

@@ -7,7 +7,7 @@ type PostBoxProps = {
 
 export const PostBox: Component<PostBoxProps> = ({ post }) => {
   return (
-    <Box mt={10} p={10} borderRadius='lg' bg='gray.50' shadow='lg'>
+    <Box mt={10} p={10} borderRadius='lg' bg='gray.50' shadow='lg' data-testid='post-box'>
       <Heading>{post.title}</Heading>
       <Text>{post.content}</Text>
       <Box pos='relative' top={30} textAlign='right'>

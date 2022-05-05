@@ -6,12 +6,12 @@ import { Box, Button, Heading, useToast } from '@chakra-ui/react'
 import { InputField } from '../components/input-field'
 import { Wrapper } from '../components/wrapper'
 import { CreatePostDto } from '../types/post'
-import { usePosts } from '../context/posts-context'
+import { useApi } from '../context/api-context'
 
 type PostPageProps = {}
 
 export const PostPage: Component<PostPageProps> = () => {
-  const { createPost } = usePosts()
+  const { createPost } = useApi().PostApi
   const toast = useToast({ position: 'top', isClosable: true })
 
   const navigate = useNavigate()
