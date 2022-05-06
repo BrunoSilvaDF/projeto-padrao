@@ -2,15 +2,13 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Box, Button, Flex, useToast } from '@chakra-ui/react'
 import { Formik, Form } from 'formik'
-
-import { InputField } from '../components/input-field'
-import { useAuth } from '../context/auth-context'
-import { LoginUserDto } from '../types/user'
 import { useMutation, useQueryClient } from 'react-query'
 
-type LoginPageProps = {}
+import { useAuth } from '../context'
+import { LoginUserDto } from '../types'
+import { InputField } from '../components'
 
-export const LoginPage: Component<LoginPageProps> = () => {
+export const LoginPage: Component = () => {
   const { login } = useAuth()
   const toast = useToast({ position: 'top', isClosable: true })
   const navigate = useNavigate()

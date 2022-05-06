@@ -2,10 +2,10 @@ import React from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { Box, Flex, Link, Icon, useToast } from '@chakra-ui/react'
 import { FaUserCircle } from 'react-icons/fa'
+import { useMutation, useQueryClient } from 'react-query'
 
 import { HeaderBar } from './header-bar'
-import { useAuth } from '../context/auth-context'
-import { useMutation, useQueryClient } from 'react-query'
+import { useAuth } from '../../context'
 
 type HeaderProps = {}
 

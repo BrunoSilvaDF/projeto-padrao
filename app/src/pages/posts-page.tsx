@@ -1,16 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Box, Button, Flex, Heading } from '@chakra-ui/react'
-
-import { PostBox } from '../components/post-box'
-import { Wrapper } from '../components/wrapper'
-import { useAuth } from '../context/auth-context'
-import { useApi } from '../context/api-context'
 import { useQuery } from 'react-query'
 
-type PostsPageProps = {}
+import { PostBox } from '../components'
+import { Wrapper } from '../components/layout/wrapper'
+import { useAuth, useApi } from '../context'
 
-export const PostsPage: React.FC<PostsPageProps> = () => {
+export const PostsPage: React.FC = () => {
   const { user } = useAuth()
   const { fetchPosts } = useApi().PostApi
 

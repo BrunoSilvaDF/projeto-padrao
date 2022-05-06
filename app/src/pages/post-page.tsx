@@ -2,16 +2,14 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { Box, Button, Heading, useToast } from '@chakra-ui/react'
-
-import { InputField } from '../components/input-field'
-import { Wrapper } from '../components/wrapper'
-import { CreatePostDto } from '../types/post'
-import { useApi } from '../context/api-context'
 import { useMutation, useQueryClient } from 'react-query'
 
-type PostPageProps = {}
+import { Wrapper } from '../components/layout'
+import { InputField } from '../components'
+import { CreatePostDto } from '../types'
+import { useApi } from '../context'
 
-export const PostPage: Component<PostPageProps> = () => {
+export const PostPage: Component = () => {
   const { createPost } = useApi().PostApi
   const toast = useToast({ position: 'top', isClosable: true })
   const navigate = useNavigate()

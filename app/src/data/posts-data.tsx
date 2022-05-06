@@ -1,5 +1,5 @@
-import { api } from '../data/api'
-import { CreatePostDto, Post } from '../types/post'
+import api from '../data/api'
+import { CreatePostDto, Post } from '../types'
 
 // const createPost = async (values: CreatePostDto): Promise<void> => {
 //   await api.post('/posts', values)

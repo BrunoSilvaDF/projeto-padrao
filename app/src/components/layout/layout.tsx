@@ -1,5 +1,6 @@
 import React from 'react'
 import { Flex, Box, Center, Text } from '@chakra-ui/react'
+
 import { Header } from './header'
 
 const Content: Component = ({ children }) => (

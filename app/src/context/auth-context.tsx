@@ -1,7 +1,8 @@
 import { createContext, useContext, useState } from 'react'
-import { api } from '../data/api'
-import { LoginUserDto, User } from '../types/user'
 import jwt from 'jwt-decode'
+
+import api from '../data/api'
+import { LoginUserDto, User } from '../types'
 
 interface IAuthContext {
   user?: User

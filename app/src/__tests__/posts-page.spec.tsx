@@ -5,7 +5,7 @@ import { createMemoryHistory } from 'history'
 
 import { render, MockAuthContext, MockApiContext, mockPosts, mockUser } from '../__test-utils__'
 import { User, Post } from '../types'
-import { PostsPage } from '../pages/posts-page'
+import { PostsPage } from '../pages'
 
 type SutParams = {
   user?: User

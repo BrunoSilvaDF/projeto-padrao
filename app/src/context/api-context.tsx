@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react'
-import { PostApi, IPostAPi } from '../data/posts-data'
+
+import { PostApi, IPostAPi } from '../data'
 
 export const ApiContext = createContext<{ PostApi: IPostAPi }>({
   PostApi,

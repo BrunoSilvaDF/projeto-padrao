@@ -1,13 +1,9 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import { LoginPage } from './pages/login-page'
-import { PostPage } from './pages/post-page'
-import { PostsPage } from './pages/posts-page'
+import { LoginPage, PostPage, PostsPage } from './pages'
 
-interface RouterProps {}
-
-export const Router: Component<RouterProps> = () => {
+export const Router: Component = () => {
   return (
     <Routes>
       <Route path='/' element={<PostsPage />} />

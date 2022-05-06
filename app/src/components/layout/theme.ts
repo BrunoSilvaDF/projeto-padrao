@@ -6,7 +6,7 @@ const config: ThemeConfig = {
   useSystemColorMode: true,
 }
 
-const theme = extendTheme({
+export const theme = extendTheme({
   config,
   styles: {
     global: (props: any) => ({
@@ -19,5 +19,3 @@ const theme = extendTheme({
     }),
   },
 })
-
-export default theme
