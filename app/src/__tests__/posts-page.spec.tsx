@@ -1,46 +1,31 @@
-import userEvent from '@testing-library/user-event'
-import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
-import { ApiContext } from '../context/api-context'
-import { AuthContext } from '../context/auth-context'
-import { PostsPage } from '../pages/posts-page'
-import { render } from '../test-utils'
-import { User } from '../types/user'
-import { Post } from '../../../api/data'
+import userEvent from '@testing-library/user-event'
 import { waitForElementToBeRemoved } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+
+import { render, MockAuthContext, MockApiContext, mockPosts, mockUser } from '../__test-utils__'
+import { User, Post } from '../types'
+import { PostsPage } from '../pages/posts-page'
 
 type SutParams = {
   user?: User
   fetchPosts?: () => Promise<Post[]>
 }
 
-const mockPosts = [
-  {
-    id: 1,
-    title: 'any_title',
-    content: 'any_content',
-    createdAt: new Date(),
-  },
-]
-
-const makeSut = ({ user, fetchPosts = jest.fn().mockResolvedValue(mockPosts) }: SutParams = {}) => {
+const makeSut = ({
+  user,
+  fetchPosts = jest.fn().mockResolvedValue(mockPosts()),
+}: SutParams = {}) => {
   const history = createMemoryHistory()
   history.push('/')
   const renderReturn = render(
-    <AuthContext.Provider value={{ login: jest.fn(), logout: jest.fn(), user }}>
-      <ApiContext.Provider
-        value={{
-          PostApi: {
-            createPost: jest.fn(),
-            fetchPosts,
-          },
-        }}
-      >
+    <MockAuthContext user={user}>
+      <MockApiContext PostApi={{ fetchPosts, createPost: jest.fn() }}>
         <Router location={history.location} navigator={history}>
           <PostsPage />
         </Router>
-      </ApiContext.Provider>
-    </AuthContext.Provider>
+      </MockApiContext>
+    </MockAuthContext>
   )
   return {
     user: userEvent.setup(),
@@ -62,14 +47,14 @@ describe('<PostsPage />', () => {
   })
 
   it('Should render new post button if logged in', () => {
-    const { queryByTestId } = makeSut({ user: { name: 'any_name', accessToken: 'any_token' } })
+    const { queryByTestId } = makeSut({ user: mockUser() })
     const btn = queryByTestId('btn-new-post')
     expect(btn).toBeInTheDocument()
   })
 
   it('Should redirect to /post on button click', async () => {
     const { getByTestId, user, history } = makeSut({
-      user: { name: 'any_name', accessToken: 'any_token' },
+      user: mockUser(),
     })
     const btn = getByTestId('btn-new-post')
     await user.click(btn)
@@ -87,6 +72,6 @@ describe('<PostsPage />', () => {
 
     await waitForElementToBeRemoved(() => queryByTestId('loading'))
 
-    expect(getByText(mockPosts[0].title)).toBeInTheDocument()
+    expect(getByText(mockPosts()[0].title)).toBeInTheDocument()
   })
 })
