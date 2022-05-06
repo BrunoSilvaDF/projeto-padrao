@@ -7,35 +7,37 @@ import { InputField } from '../components/input-field'
 import { Wrapper } from '../components/wrapper'
 import { CreatePostDto } from '../types/post'
 import { useApi } from '../context/api-context'
+import { useMutation, useQueryClient } from 'react-query'
 
 type PostPageProps = {}
 
 export const PostPage: Component<PostPageProps> = () => {
   const { createPost } = useApi().PostApi
   const toast = useToast({ position: 'top', isClosable: true })
-
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
-  const initialValues: CreatePostDto = {
-    title: '',
-    content: '',
-  }
-
-  const onSubmit = async (values: CreatePostDto) => {
-    try {
-      await createPost(values)
+  const { mutate: onSubmit } = useMutation(createPost, {
+    onSuccess: () => {
       toast({
         description: 'Post created!!',
         status: 'success',
       })
+      queryClient.invalidateQueries('posts')
       navigate('/')
-    } catch (error) {
+    },
+    onError: () => {
       toast({
         title: 'Error',
         description: 'Something went wrong',
         status: 'error',
       })
-    }
+    },
+  })
+
+  const initialValues: CreatePostDto = {
+    title: '',
+    content: '',
   }
 
   return (
@@ -44,7 +46,7 @@ export const PostPage: Component<PostPageProps> = () => {
         Create a new Post
       </Heading>
       <Box p='10' borderRadius='lg' bg='gray.100'>
-        <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        <Formik initialValues={initialValues} onSubmit={values => onSubmit(values)}>
           {({ isSubmitting }) => (
             <Form>
               <InputField name='title' label='Title' />

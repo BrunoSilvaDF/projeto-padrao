@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { Box, Button, Flex, Heading } from '@chakra-ui/react'
 
@@ -6,21 +6,15 @@ import { PostBox } from '../components/post-box'
 import { Wrapper } from '../components/wrapper'
 import { useAuth } from '../context/auth-context'
 import { useApi } from '../context/api-context'
+import { useQuery } from 'react-query'
 
 type PostsPageProps = {}
 
 export const PostsPage: React.FC<PostsPageProps> = () => {
   const { user } = useAuth()
   const { fetchPosts } = useApi().PostApi
-  const [posts, setPosts] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    setIsLoading(true)
-    fetchPosts()
-      .then(setPosts)
-      .finally(() => setIsLoading(false))
-  }, [fetchPosts])
+  const { data: posts, isLoading } = useQuery('posts', fetchPosts)
 
   return (
     <Wrapper>
@@ -37,10 +31,10 @@ export const PostsPage: React.FC<PostsPageProps> = () => {
           Loading...
         </Box>
       )}
-      {posts.map(post => (
+      {posts?.map(post => (
         <PostBox key={post.id} post={post} />
       ))}
-      {posts.length === 0 && (
+      {posts?.length === 0 && (
         <Box mt={10} p={10}>
           So empty...
         </Box>

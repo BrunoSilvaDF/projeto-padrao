@@ -6,6 +6,7 @@ import { Formik, Form } from 'formik'
 import { InputField } from '../components/input-field'
 import { useAuth } from '../context/auth-context'
 import { LoginUserDto } from '../types/user'
+import { useMutation, useQueryClient } from 'react-query'
 
 type LoginPageProps = {}
 
@@ -13,30 +14,32 @@ export const LoginPage: Component<LoginPageProps> = () => {
   const { login } = useAuth()
   const toast = useToast({ position: 'top', isClosable: true })
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
+  const { mutate: onSubmit } = useMutation(login, {
+    onSuccess: () => {
+      navigate('/')
+      queryClient.invalidateQueries()
+    },
+    onError: () => {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong on login',
+        status: 'error',
+      })
+    },
+  })
 
   const initialValues: LoginUserDto = {
     username: '',
     password: '',
   }
 
-  const onSubmit = async (values: LoginUserDto) => {
-    try {
-      await login(values)
-      navigate('/')
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Something went wrong on login',
-        status: 'error',
-      })
-    }
-  }
-
   return (
     <Flex h='100%' minH='80vh' alignContent='center' alignItems='center'>
       <Box mx='auto' w='100%' maxW='20rem'>
         <Box p='10' borderRadius='lg' bg='gray.500'>
-          <Formik initialValues={initialValues} onSubmit={onSubmit}>
+          <Formik initialValues={initialValues} onSubmit={values => onSubmit(values)}>
             {({ isSubmitting }) => (
               <Form>
                 <InputField name='username' label='Login' />

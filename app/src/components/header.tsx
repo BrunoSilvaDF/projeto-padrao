@@ -5,22 +5,28 @@ import { FaUserCircle } from 'react-icons/fa'
 
 import { HeaderBar } from './header-bar'
 import { useAuth } from '../context/auth-context'
+import { useMutation, useQueryClient } from 'react-query'
 
 type HeaderProps = {}
 
 export const Header: Component<HeaderProps> = () => {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
-  const toast = useToast({ position: 'top', isClosable: true })
+  const toast = useToast({
+    position: 'top',
+    isClosable: true,
+    description: 'You logged out',
+    status: 'info',
+  })
+  const queryClient = useQueryClient()
 
-  const onLogout = async () => {
-    await logout()
-    toast({
-      description: 'You logged out',
-      status: 'info',
-    })
-    navigate('/')
-  }
+  const { mutate: onLogout } = useMutation(logout, {
+    onSuccess: () => {
+      queryClient.invalidateQueries()
+      toast()
+      navigate('/')
+    },
+  })
 
   return (
     <HeaderBar>
@@ -30,7 +36,7 @@ export const Header: Component<HeaderProps> = () => {
             <Box>Hi {user.name}!</Box>
             <Icon as={FaUserCircle} />
             <Box>
-              <Link onClick={onLogout}>logout</Link>
+              <Link onClick={() => onLogout()}>logout</Link>
             </Box>
           </>
         ) : (

@@ -7,19 +7,26 @@ import theme from './components/theme'
 import { Layout } from './components/layout'
 import { AuthContextProvider } from './context/auth-context'
 import { ApiProvider } from './context/api-context'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+
+const queryClient = new QueryClient()
 
 export const App = () => {
   return (
     <ChakraProvider theme={theme} resetCSS>
-      <AuthContextProvider>
-        <ApiProvider>
-          <BrowserRouter>
-            <Layout>
-              <Router />
-            </Layout>
-          </BrowserRouter>
-        </ApiProvider>
-      </AuthContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools />
+        <AuthContextProvider>
+          <ApiProvider>
+            <BrowserRouter>
+              <Layout>
+                <Router />
+              </Layout>
+            </BrowserRouter>
+          </ApiProvider>
+        </AuthContextProvider>
+      </QueryClientProvider>
     </ChakraProvider>
   )
 }
