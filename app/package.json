@@ -7,7 +7,7 @@
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^10.4.9",
+    "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^14.1.1",
     "@types/jest": "^25.2.3",
     "@types/node": "^12.20.47",
@@ -28,6 +28,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

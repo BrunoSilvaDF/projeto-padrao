@@ -1,12 +1,18 @@
 import { Router } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
-import { waitForElementToBeRemoved } from '@testing-library/react'
+import { fireEvent, waitForElementToBeRemoved } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 
-import { render, MockAuthContext, MockApiContext, mockPosts, mockUser } from '../__test-utils__'
+import {
+  render,
+  MockAuthContext,
+  MockApiContext,
+  mockPosts,
+  mockUser,
+  MockQueryClient,
+} from '../__test-utils__'
 import { User, Post } from '../domain/types'
 import { PostsPage } from '../presentation/pages'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
 type SutParams = {
   user?: User
@@ -20,18 +26,7 @@ const makeSut = ({
   const history = createMemoryHistory()
   history.push('/')
   const renderReturn = render(
-    <QueryClientProvider
-      client={
-        new QueryClient({
-          defaultOptions: {
-            queries: {
-              // turns retries off
-              retry: false,
-            },
-          },
-        })
-      }
-    >
+    <MockQueryClient>
       <MockAuthContext user={user}>
         <MockApiContext PostApi={{ fetchPosts, createPost: jest.fn() }}>
           <Router location={history.location} navigator={history}>
@@ -39,7 +34,7 @@ const makeSut = ({
           </Router>
         </MockApiContext>
       </MockAuthContext>
-    </QueryClientProvider>
+    </MockQueryClient>
   )
   return {
     user: userEvent.setup(),
@@ -67,11 +62,12 @@ describe('<PostsPage />', () => {
   })
 
   it('Should redirect to /post on button click', async () => {
-    const { getByTestId, user, history } = makeSut({
+    const { getByTestId, history } = makeSut({
       user: mockUser(),
     })
-    const btn = getByTestId('btn-new-post')
-    await user.click(btn)
+
+    fireEvent.click(getByTestId('btn-new-post'))
+
     expect(history.location.pathname).toBe('/post')
   })
 
@@ -89,7 +85,7 @@ describe('<PostsPage />', () => {
     expect(getByTestId('empty')).toBeInTheDocument()
   })
 
-  it('Should render erro message', async () => {
+  it('Should render error message', async () => {
     const fetchPosts = jest.fn().mockRejectedValue(new Error('error'))
     const { getByTestId, queryByTestId } = makeSut({ fetchPosts })
 

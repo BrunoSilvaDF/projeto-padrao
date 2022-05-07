@@ -3,12 +3,7 @@ import jwt from 'jwt-decode'
 
 import api from '../data/api'
 import { LoginUserDto, User } from '../domain/types'
-
-interface IAuthContext {
-  user?: User
-  login: (values: LoginUserDto) => Promise<void>
-  logout: () => Promise<void>
-}
+import { IAuthContext } from '../domain/interfaces'
 
 export const AuthContext = createContext<IAuthContext>({
   login: () => Promise.reject(),
