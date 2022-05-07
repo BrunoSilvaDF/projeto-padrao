@@ -43,6 +43,7 @@ module.exports = function (app) {
     const post = new Post(title, content)
     posts.push(post)
     console.log('Post created', post)
+    res.status(201)
     res.json('post saved')
   })
 }
