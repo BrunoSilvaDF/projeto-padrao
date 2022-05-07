@@ -1,39 +1,29 @@
-import { createContext, useContext, useState } from 'react'
-import jwt from 'jwt-decode'
+import { createContext, useContext } from 'react'
+import { useObservableState } from 'observable-hooks'
 
-import api from '../data/api'
-import { LoginUserDto, User } from '../domain/types'
+import { AuthApi } from '../data/auth-api-data'
 import { IAuthContext } from '../domain/interfaces'
+import { LoginUserDto } from '../domain/types'
+import { user$ } from './user-store'
 
 export const AuthContext = createContext<IAuthContext>({
   login: () => Promise.reject(),
   logout: () => Promise.reject(),
 })
 
+const authApi = new AuthApi()
+
 export const AuthContextProvider: Component = ({ children }) => {
-  const [user, setUser] = useState<User | undefined>()
+  const user = useObservableState(user$, undefined)
 
   const login = async (values: LoginUserDto) => {
-    const { data } = await api.post<User>('/login', values)
-    const tokenData = jwt(data.accessToken)
-    setUser({
-      name: (tokenData as any).username,
-      accessToken: data.accessToken,
-    })
-    api.interceptors.request.use(req => {
-      req.headers!['x-access-token'] = data.accessToken
-      return req
-    })
+    const user = await authApi.login(values)
+    user$.next(user)
   }
 
   const logout = async () => {
-    await api.get('/logout', {
-      headers: {
-        'x-access-token': user!.accessToken,
-      },
-    })
-    setUser(undefined)
-    api.interceptors.request.eject(0)
+    await authApi.logout()
+    user$.next(undefined)
   }
 
   return (
