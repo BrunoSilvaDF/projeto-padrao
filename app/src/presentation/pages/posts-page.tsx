@@ -5,8 +5,7 @@ import { useQuery } from 'react-query'
 
 import { PostBox } from '../components'
 import { Wrapper } from '../components/layout/wrapper'
-import { useApi } from '../../context/api-context'
-import { useAuth } from '../../context/auth-context'
+import { useApi, useAuth } from '../../context'
 
 export const PostsPage: React.FC = () => {
   const { user } = useAuth()

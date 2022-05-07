@@ -12,7 +12,7 @@ export const PostBox: Component<PostBoxProps> = ({ post }) => {
       <Text>{post.content}</Text>
       <Box pos='relative' top={30} textAlign='right'>
         <Text as='i' color='gray.400'>
-          Created at {new Date(post.createdAt).toLocaleString()}
+          Created at {post.createdAt.toLocaleString()}
         </Text>
       </Box>
     </Box>
