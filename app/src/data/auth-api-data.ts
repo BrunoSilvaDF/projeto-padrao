@@ -7,7 +7,7 @@ import api from './api'
 export class AuthApi {
   async login(values: LoginUserDto): Promise<User> {
     try {
-      const { data } = await api.post<User>('/login', values)
+      const { data } = await api.post<LoginUserReturn>('/login', values)
       const tokenData = jwt(data.accessToken)
       return {
         name: (tokenData as any).username,
@@ -27,4 +27,8 @@ export class AuthApi {
       throw new Error(axiosError.response?.data)
     }
   }
+}
+
+type LoginUserReturn = {
+  accessToken: string
 }

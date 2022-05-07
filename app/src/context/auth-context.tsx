@@ -2,9 +2,9 @@ import { createContext, useContext } from 'react'
 import { useObservableState } from 'observable-hooks'
 
 import { AuthApi } from '../data/auth-api-data'
+import { user$ } from '../data/user-store'
 import { IAuthContext } from '../domain/interfaces'
 import { LoginUserDto } from '../domain/types'
-import { user$ } from './user-store'
 
 export const AuthContext = createContext<IAuthContext>({
   login: () => Promise.reject(),
