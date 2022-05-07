@@ -1,13 +1,14 @@
 import { createContext, useContext } from 'react'
 
-import { PostApi, IPostAPi } from '../data'
+import { PostApi } from '../data'
+import { IPostApi } from '../domain/interfaces'
 
-export const ApiContext = createContext<{ PostApi: IPostAPi }>({
-  PostApi,
+export const ApiContext = createContext<{ PostApi: IPostApi }>({
+  PostApi: new PostApi(),
 })
 
 export const ApiProvider: Component = ({ children }) => (
-  <ApiContext.Provider value={{ PostApi }}>{children}</ApiContext.Provider>
+  <ApiContext.Provider value={{ PostApi: new PostApi() }}>{children}</ApiContext.Provider>
 )
 
 export const useApi = () => useContext(ApiContext)

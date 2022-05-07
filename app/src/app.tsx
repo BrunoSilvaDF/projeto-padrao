@@ -4,9 +4,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
-import { Router } from './router'
-import { Layout, theme } from './components/layout'
-import { AuthContextProvider, ApiProvider } from './context'
+import { Router } from './presentation/router'
+import { theme } from './presentation/components/layout'
+import { ApiProvider } from './context/api-context'
+import { AuthContextProvider } from './context/auth-context'
 
 const queryClient = new QueryClient()
 
@@ -18,9 +19,7 @@ export const App = () => {
         <AuthContextProvider>
           <ApiProvider>
             <BrowserRouter>
-              <Layout>
-                <Router />
-              </Layout>
+              <Router />
             </BrowserRouter>
           </ApiProvider>
         </AuthContextProvider>

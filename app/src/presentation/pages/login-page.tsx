@@ -4,8 +4,8 @@ import { Box, Button, Flex, useToast } from '@chakra-ui/react'
 import { Formik, Form } from 'formik'
 import { useMutation, useQueryClient } from 'react-query'
 
-import { useAuth } from '../context'
-import { LoginUserDto } from '../types'
+import { useAuth } from '../../context/auth-context'
+import { LoginUserDto } from '../../domain/types'
 import { InputField } from '../components'
 
 export const LoginPage: Component = () => {

@@ -1,1 +1,1 @@
-export * from './posts-data'
+export * from './post-api-data'

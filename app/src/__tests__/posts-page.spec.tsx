@@ -4,8 +4,9 @@ import { waitForElementToBeRemoved } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 
 import { render, MockAuthContext, MockApiContext, mockPosts, mockUser } from '../__test-utils__'
-import { User, Post } from '../types'
-import { PostsPage } from '../pages'
+import { User, Post } from '../domain/types'
+import { PostsPage } from '../presentation/pages'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 type SutParams = {
   user?: User
@@ -19,13 +20,26 @@ const makeSut = ({
   const history = createMemoryHistory()
   history.push('/')
   const renderReturn = render(
-    <MockAuthContext user={user}>
-      <MockApiContext PostApi={{ fetchPosts, createPost: jest.fn() }}>
-        <Router location={history.location} navigator={history}>
-          <PostsPage />
-        </Router>
-      </MockApiContext>
-    </MockAuthContext>
+    <QueryClientProvider
+      client={
+        new QueryClient({
+          defaultOptions: {
+            queries: {
+              // turns retries off
+              retry: false,
+            },
+          },
+        })
+      }
+    >
+      <MockAuthContext user={user}>
+        <MockApiContext PostApi={{ fetchPosts, createPost: jest.fn() }}>
+          <Router location={history.location} navigator={history}>
+            <PostsPage />
+          </Router>
+        </MockApiContext>
+      </MockAuthContext>
+    </QueryClientProvider>
   )
   return {
     user: userEvent.setup(),
@@ -61,10 +75,29 @@ describe('<PostsPage />', () => {
     expect(history.location.pathname).toBe('/post')
   })
 
+  it('Should render loading message if posts are not fetched', async () => {
+    const { getByTestId } = makeSut()
+    expect(getByTestId('loading')).toBeInTheDocument()
+  })
+
   it('Should render empty message on empty Posts', async () => {
     const fetchPosts = jest.fn().mockResolvedValue([])
-    const { getByText } = makeSut({ fetchPosts })
-    expect(getByText('So empty...')).toBeInTheDocument()
+    const { getByTestId, queryByTestId } = makeSut({ fetchPosts })
+
+    await waitForElementToBeRemoved(() => queryByTestId('loading'))
+
+    expect(getByTestId('empty')).toBeInTheDocument()
+  })
+
+  it('Should render erro message', async () => {
+    const fetchPosts = jest.fn().mockRejectedValue(new Error('error'))
+    const { getByTestId, queryByTestId } = makeSut({ fetchPosts })
+
+    await waitForElementToBeRemoved(() => queryByTestId('loading'))
+
+    const err = getByTestId('error')
+    expect(err).toBeInTheDocument()
+    expect(err).toHaveTextContent('Error! error')
   })
 
   it('Should render Posts', async () => {

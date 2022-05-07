@@ -1,12 +1,13 @@
 import React from 'react'
-import { ApiContext } from '../context'
-import { IPostAPi } from '../data'
+
+import { ApiContext } from '../context/api-context'
+import { IPostApi } from '../domain/interfaces'
 
 type MockApiContextProps = {
-  PostApi?: IPostAPi
+  PostApi?: IPostApi
 }
 
-const mockPostApi = (): IPostAPi => ({
+const mockPostApi = (): IPostApi => ({
   createPost: jest.fn(),
   fetchPosts: jest.fn(),
 })
