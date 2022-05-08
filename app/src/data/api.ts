@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { handleDates } from './date-handler'
+import { handleDates } from './helpers/date-handler'
 
 const api = axios.create({
   baseURL: 'http://localhost:5000',

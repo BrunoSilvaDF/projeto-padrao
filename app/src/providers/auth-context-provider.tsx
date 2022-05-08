@@ -3,14 +3,13 @@ import { useObservableState } from 'observable-hooks'
 import { user$ } from '../data/user-store'
 import { IAuthApi } from '../domain/interfaces'
 import { LoginUserDto } from '../domain/types'
-import { AuthApi } from '../data'
 import { AuthContext } from '../domain/context/auth-context'
 
-type AuthContextContainerProps = {
+type AuthContextProviderProps = {
   authApi: IAuthApi
 }
 
-const AuthContextContainer: Component<AuthContextContainerProps> = ({ children, authApi }) => {
+export const AuthContextProvider: Component<AuthContextProviderProps> = ({ children, authApi }) => {
   const user = useObservableState(user$, undefined)
 
   const login = async (values: LoginUserDto) => {
@@ -35,7 +34,3 @@ const AuthContextContainer: Component<AuthContextContainerProps> = ({ children, 
     </AuthContext.Provider>
   )
 }
-
-export const AuthContextProvider: Component = ({ children }) => (
-  <AuthContextContainer authApi={new AuthApi()}>{children}</AuthContextContainer>
-)

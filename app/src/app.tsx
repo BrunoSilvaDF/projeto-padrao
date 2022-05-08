@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { Router } from './presentation/router'
 import { theme } from './presentation/components/layout'
 import { ApiProvider, AuthContextProvider } from './providers'
+import { AuthApi } from './data'
 
 const queryClient = new QueryClient()
 
@@ -15,7 +16,7 @@ export const App = () => {
     <ChakraProvider theme={theme} resetCSS>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
-        <AuthContextProvider>
+        <AuthContextProvider authApi={new AuthApi()}>
           <ApiProvider>
             <BrowserRouter>
               <Router />
