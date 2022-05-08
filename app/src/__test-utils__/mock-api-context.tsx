@@ -1,6 +1,6 @@
 import React from 'react'
+import { ApiContext } from '../domain/context/api-context'
 
-import { ApiContext } from '../context/api-context'
 import { IPostApi } from '../domain/interfaces'
 
 type MockApiContextProps = {

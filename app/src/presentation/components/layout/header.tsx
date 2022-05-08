@@ -5,7 +5,7 @@ import { FaUserCircle } from 'react-icons/fa'
 import { useMutation, useQueryClient } from 'react-query'
 
 import { HeaderBar } from './header-bar'
-import { useAuth } from '../../../context/auth-context'
+import { useAuth } from '../../../domain/context'
 
 type HeaderProps = {}
 

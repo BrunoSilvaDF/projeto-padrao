@@ -6,8 +6,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 
 import { Router } from './presentation/router'
 import { theme } from './presentation/components/layout'
-import { ApiProvider } from './context/api-context'
-import { AuthContextProvider } from './context/auth-context'
+import { ApiProvider, AuthContextProvider } from './providers'
 
 const queryClient = new QueryClient()
 

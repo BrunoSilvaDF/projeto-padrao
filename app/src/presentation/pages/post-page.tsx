@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from 'react-query'
 import { Wrapper } from '../components/layout'
 import { InputField } from '../components'
 import { CreatePostDto } from '../../domain/types'
-import { useApi } from '../../context'
+import { useApi } from '../../domain/context'
 
 export const PostPage: Component = () => {
   const { createPost } = useApi().PostApi

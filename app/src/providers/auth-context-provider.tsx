@@ -1,15 +1,10 @@
-import { createContext, useContext } from 'react'
 import { useObservableState } from 'observable-hooks'
 
 import { user$ } from '../data/user-store'
-import { IAuthApi, IAuthContext } from '../domain/interfaces'
+import { IAuthApi } from '../domain/interfaces'
 import { LoginUserDto } from '../domain/types'
 import { AuthApi } from '../data'
-
-export const AuthContext = createContext<IAuthContext>({
-  login: () => Promise.reject(),
-  logout: () => Promise.reject(),
-})
+import { AuthContext } from '../domain/context/auth-context'
 
 type AuthContextContainerProps = {
   authApi: IAuthApi
@@ -44,5 +39,3 @@ const AuthContextContainer: Component<AuthContextContainerProps> = ({ children, 
 export const AuthContextProvider: Component = ({ children }) => (
   <AuthContextContainer authApi={new AuthApi()}>{children}</AuthContextContainer>
 )
-
-export const useAuth = () => useContext(AuthContext)
