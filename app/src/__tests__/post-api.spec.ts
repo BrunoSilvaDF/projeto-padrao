@@ -2,7 +2,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import api from '../data/api'
 import { PostApi } from '../data'
-import { mockPosts } from '../__test-utils__/mock-types'
+import { mockPosts } from './test-utils'
 
 const mock = new MockAdapter(api)
 

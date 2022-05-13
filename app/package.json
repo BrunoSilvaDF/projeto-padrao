@@ -54,5 +54,10 @@
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
     "axios-mock-adapter": "^1.20.0"
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/src/__tests__/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ]
   }
 }

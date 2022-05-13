@@ -10,7 +10,7 @@ import {
   mockPosts,
   mockUser,
   MockQueryClient,
-} from '../__test-utils__'
+} from './test-utils'
 import { User, Post } from '../domain/types'
 import { PostsPage } from '../presentation/pages'
 

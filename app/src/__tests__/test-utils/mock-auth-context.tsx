@@ -1,6 +1,6 @@
 import React from 'react'
-import { AuthContext } from '../domain/context/auth-context'
-import { User, LoginUserDto } from '../domain/types'
+import { AuthContext } from '../../domain/context'
+import { User, LoginUserDto } from '../../domain/types'
 
 type MockAuthContextProps = {
   user?: User
